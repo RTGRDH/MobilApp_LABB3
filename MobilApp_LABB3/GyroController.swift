@@ -16,6 +16,7 @@ class GyroController:ObservableObject
     @Published var isOn:Bool
     private var alpha:Double
     @Published var cPitch:Double
+    private var totalData = [gyroData()]
     private var oldY:Double
     private var cPitchOld:Double
     init()
@@ -38,14 +39,18 @@ class GyroController:ObservableObject
                  repeats: true, block: { (timer) in
              // Get the gyro data.
              if let data = self.motion.gyroData {
-                let x = data.rotationRate.x
+                //let x = data.rotationRate.x
                 let y = data.rotationRate.y
-                let z = data.rotationRate.z
+                //let z = data.rotationRate.z
 
                 // Use the gyroscope data in your app.
                 let fY = self.filterY(y: y, oldY: self.oldY)
                 self.oldY = fY
                 self.cPitch = self.alpha*(self.cPitchOld + (self.motion.gyroUpdateInterval * fY)) + ((1-self.alpha)*self.ac.getaccPitch())
+                var gyro = gyroData()
+                gyro.value = self.cPitch
+                gyro.time = String(NSDate().timeIntervalSince1970)
+                self.totalData.append(gyro)
                 self.cPitchOld = self.cPitch
              }
           })
@@ -57,7 +62,7 @@ class GyroController:ObservableObject
     
     func startGyro(){
         startGyros()
-        let timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopGyros), userInfo: nil, repeats: false)
+        _ = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopGyros), userInfo: nil, repeats: false)
     }
 
     @objc func stopGyros() {
@@ -66,6 +71,8 @@ class GyroController:ObservableObject
           self.motion.stopGyroUpdates()
           ac.stopAccelerometerUpdates()
         isOn = false
+        save(toBeSaved: totalData)
+        totalData = [gyroData()]
        }
     }
     private func filterY(y:Double, oldY:Double)->Double
@@ -75,5 +82,28 @@ class GyroController:ObservableObject
     public func getCPitch()-> Double
     {
         return cPitch
+    }
+    
+    func removeTandZ(string: String) -> String{
+        var toBeRemoved = string
+        let char: Set<Character> = ["T", "Z"]
+        toBeRemoved = toBeRemoved.replacingOccurrences(of: "T", with: " ")
+        toBeRemoved.removeAll(where: { char.contains($0) })
+        return toBeRemoved
+    }
+    private let gyroKey = "savedGyroData"
+
+    private func save(toBeSaved: [gyroData]){
+        print("Saving data to file")
+        if let encoded = try? JSONEncoder().encode(toBeSaved) {
+            UserDefaults.standard.set(encoded, forKey: gyroKey)
+        }else{
+            print("Something went wrong when saving the data")
+        }
+    }
+    
+    struct gyroData: Codable{
+        var value: Double?
+        var time: String?
     }
 }

@@ -16,6 +16,7 @@ public class AccController: ObservableObject
     private var oldX:Double
     private var oldY:Double
     private var oldZ:Double
+    private var totalData = [accData()]
     private var timer = Timer()
     init()
     {
@@ -54,6 +55,10 @@ public class AccController: ObservableObject
                 oldY = fY
                 oldZ = fZ
                 accPitch = atan(fX/(sqrt(pow(fY, 2)+pow(fZ, 2))))*(180/Double.pi)
+                var acc = accData()
+                acc.value = accPitch
+                acc.time = String(NSDate().timeIntervalSince1970)
+                totalData.append(acc)
              }
           })
 
@@ -64,7 +69,7 @@ public class AccController: ObservableObject
     
     func startAcc(){
         startAccelerometers()
-        let timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopAccelerometerUpdates), userInfo: nil, repeats: false)
+        _ = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopAccelerometerUpdates), userInfo: nil, repeats: false)
     }
     
     private func filterX(x:Double, oldX:Double) -> Double
@@ -85,9 +90,26 @@ public class AccController: ObservableObject
             self.motion.stopAccelerometerUpdates()
         }
         isOn = false
+        save(toBeSaved: totalData)
+        totalData = [accData()]
     }
     public func getaccPitch() -> Double
     {
         return accPitch
+    }
+    
+    struct accData: Codable{
+        var value: Double?
+        var time: String?
+    }
+    private let accKey = "savedAccData"
+
+    private func save(toBeSaved: [accData]){
+        print("Saving data to file")
+        if let encoded = try? JSONEncoder().encode(toBeSaved) {
+            UserDefaults.standard.set(encoded, forKey: accKey)
+        }else{
+            print("Something went wrong when saving the data")
+        }
     }
 }
