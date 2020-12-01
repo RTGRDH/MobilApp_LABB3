@@ -11,7 +11,6 @@ struct ContentView: View {
     @State var controller = Controller()
     @ObservedObject var ac = AccController()
     var body: some View {
-        
         VStack(){
             HStack {
                 Text("Acc: \(Double(ac.pitch))")
@@ -20,10 +19,14 @@ struct ContentView: View {
                     .padding()
             }
             if(ac.isOn){
-                Button("Stop", action: ac.stopAccelerometerUpdates)
+                Button("Stop Accelerometer", action: ac.stopAccelerometerUpdates)
             }else{
-                Button("Start", action: ac.startAccelerometers)
+                Button("Start Accelerometer", action: ac.startAccelerometers).padding()
             }
+            HStack{
+                Text("Gyro: ")
+            }
+            Button("Start Gyro", action: ac.startAccelerometers)
         }
     }
 }
