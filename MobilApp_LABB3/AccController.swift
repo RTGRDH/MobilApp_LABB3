@@ -17,6 +17,7 @@ public class AccController: ObservableObject
     private var alpha:Double
     @Published var filteredVal:Double
     private var filteredValOld:Double
+    private var accPitch:Double
     private var timer = Timer()
     init()
     {
@@ -27,6 +28,7 @@ public class AccController: ObservableObject
         filteredVal = 0.00
         isOn = false
         filteredValOld = 0.00
+        accPitch = 0.00
     }
     /*
      From Apple's developer site
@@ -58,7 +60,7 @@ public class AccController: ObservableObject
                 self.magnitude = root - gravity
                 filteredVal = (1-self.alpha)*(self.filteredValOld) + (self.alpha * self.magnitude)
                 self.filteredValOld = self.filteredVal
-                
+                accPitch = atan(x/(sqrt(yPow+zPow)))*(180/Double.pi)
              }
           })
 
@@ -72,6 +74,10 @@ public class AccController: ObservableObject
             self.motion.stopAccelerometerUpdates()
         }
         isOn = false
+    }
+    public func getaccPitch() -> Double
+    {
+        return accPitch
     }
     public func getRoll() -> String{
         return String(roll)

@@ -11,11 +11,18 @@ import CoreMotion
 class GyroController:ObservableObject
 {
     let motion = CMMotionManager()
+    let ac = AccController()
     private var timer = Timer()
     @Published var isOn:Bool
+    private var alpha:Double
+    private var cPitch:Double
+    private var cPitchOld:Double
     init()
     {
         isOn = false
+        alpha = 0.1
+        cPitch = 0.00
+        cPitchOld = 0.00
     }
     
     func startGyros() {
@@ -33,6 +40,8 @@ class GyroController:ObservableObject
                 let z = data.rotationRate.z
 
                 // Use the gyroscope data in your app.
+                self.cPitch = self.alpha*(self.cPitchOld + (self.motion.gyroUpdateInterval * y)) + ((1-alpha)*ac.getaccPitch())
+                self.cPitchOld = self.cPitch
              }
           })
 
