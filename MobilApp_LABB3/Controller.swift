@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import CoreMotion
 
 public class Controller
 {
-
+    
 }

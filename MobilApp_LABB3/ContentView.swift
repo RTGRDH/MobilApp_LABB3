@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var controller = Controller()
+    @State var ac = AccController()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        
+        VStack(){
+            Text("\(Double(ac.pitch))")
+                .padding()
+            Button("Start", action: ac.startAccelerometers)
+        }
     }
 }
 

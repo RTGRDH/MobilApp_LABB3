@@ -14,6 +14,7 @@
 		A76786DE2575801300A7E230 /* MobilApp_LABB3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786DD2575801300A7E230 /* MobilApp_LABB3Tests.swift */; };
 		A76786E92575801300A7E230 /* MobilApp_LABB3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786E82575801300A7E230 /* MobilApp_LABB3UITests.swift */; };
 		A76786FA2575807600A7E230 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786F92575807600A7E230 /* Controller.swift */; };
+		A76786FF257581F100A7E230 /* AccController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786FE257581F100A7E230 /* AccController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		A76786E82575801300A7E230 /* MobilApp_LABB3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilApp_LABB3UITests.swift; sourceTree = "<group>"; };
 		A76786EA2575801300A7E230 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A76786F92575807600A7E230 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
+		A76786FE257581F100A7E230 /* AccController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,10 +101,11 @@
 			children = (
 				A76786CB2575800C00A7E230 /* MobilApp_LABB3App.swift */,
 				A76786CD2575800C00A7E230 /* ContentView.swift */,
+				A76786F92575807600A7E230 /* Controller.swift */,
+				A76786FE257581F100A7E230 /* AccController.swift */,
 				A76786CF2575801200A7E230 /* Assets.xcassets */,
 				A76786D42575801200A7E230 /* Info.plist */,
 				A76786D12575801200A7E230 /* Preview Content */,
-				A76786F92575807600A7E230 /* Controller.swift */,
 			);
 			path = MobilApp_LABB3;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A76786FA2575807600A7E230 /* Controller.swift in Sources */,
+				A76786FF257581F100A7E230 /* AccController.swift in Sources */,
 				A76786CE2575800C00A7E230 /* ContentView.swift in Sources */,
 				A76786CC2575800C00A7E230 /* MobilApp_LABB3App.swift in Sources */,
 			);
