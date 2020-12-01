@@ -14,9 +14,9 @@ struct ContentView: View {
         
         VStack(){
             HStack {
-                Text("Acc: \(Double(ac.pitch))")
+                Text("Acc: \(Double(ac.roll))")
                     .padding()
-                Text("Filter: ")
+                Text("Filter: \(Double(ac.filteredVal))")
                     .padding()
             }
             if(ac.isOn){
