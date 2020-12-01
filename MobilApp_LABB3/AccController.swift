@@ -15,7 +15,6 @@ public class AccController: ObservableObject
     init()
     {
         pitch = 0.00
-        startAccelerometers()
     }
     /*
      From Apple's developer site
@@ -37,7 +36,7 @@ public class AccController: ObservableObject
                 let z = data.acceleration.z
 
                 // Use the accelerometer data in your app.
-                self.pitch = atan((x)/(sqrt(pow(y, 2)+pow(z, 2))))*(180/Double.pi)
+                self.pitch = atan((y)/(sqrt(pow(x, 2)+pow(z, 2))))*(180/Double.pi)
              }
           })
 
