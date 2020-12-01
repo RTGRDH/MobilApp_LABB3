@@ -17,7 +17,6 @@ public class AccController: ObservableObject
     {
         pitch = 0.00
         isOn = false
-        startAccelerometers()
     }
     /*
      From Apple's developer site
