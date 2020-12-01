@@ -13,12 +13,16 @@ struct ContentView: View {
     var body: some View {
         
         VStack(){
-            Text("\(Double(ac.pitch))")
-                .padding()
+            HStack {
+                Text("Acc: \(Double(ac.pitch))")
+                    .padding()
+                Text("Filter: ")
+                    .padding()
+            }
             if(ac.isOn){
                 Button("Stop", action: ac.stopAccelerometerUpdates)
             }else{
-            Button("Start", action: ac.startAccelerometers)
+                Button("Start", action: ac.startAccelerometers)
             }
         }
     }
