@@ -61,6 +61,12 @@ public class AccController: ObservableObject
         RunLoop.current.add(self.timer, forMode: RunLoop.Mode.default)
        }
     }
+    
+    func startAcc(){
+        startAccelerometers()
+        let timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopAccelerometerUpdates), userInfo: nil, repeats: false)
+    }
+    
     private func filterX(x:Double, oldX:Double) -> Double
     {
         return (1-self.alpha)*(oldX) + (self.alpha * x)
@@ -73,7 +79,7 @@ public class AccController: ObservableObject
     {
         return (1-self.alpha)*(oldZ) + (self.alpha * z)
     }
-    public func stopAccelerometerUpdates() -> Void
+    @objc public func stopAccelerometerUpdates() -> Void
     {
         if self.motion.isAccelerometerActive{
             self.motion.stopAccelerometerUpdates()

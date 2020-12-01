@@ -25,7 +25,7 @@ class GyroController:ObservableObject
         cPitch = 0.00
         cPitchOld = 0.00
         oldY = 0.00
-        ac.startAccelerometers()
+        ac.startAcc()
     }
     
     func startGyros() {
@@ -54,11 +54,17 @@ class GyroController:ObservableObject
         RunLoop.current.add(self.timer, forMode: RunLoop.Mode.default)
        }
     }
+    
+    func startGyro(){
+        startGyros()
+        let timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(stopGyros), userInfo: nil, repeats: false)
+    }
 
-    func stopGyros() {
+    @objc func stopGyros() {
        if self.timer != nil {
           self.timer.invalidate()
           self.motion.stopGyroUpdates()
+          ac.stopAccelerometerUpdates()
         isOn = false
        }
     }

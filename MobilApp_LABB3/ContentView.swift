@@ -21,7 +21,7 @@ struct ContentView: View {
                 Button("Stop Accelerometer", action: ac.stopAccelerometerUpdates)
                     .padding()
             }else{
-                Button("Start Accelerometer", action: ac.startAccelerometers).padding()
+                Button("Start Accelerometer", action: ac.startAcc).padding()
             }
             HStack{
                 Text("Gyro: \(gyro.cPitch, specifier: "%.2f°")")
@@ -30,7 +30,7 @@ struct ContentView: View {
                 Button("Stop Gyro", action:gyro.stopGyros)
                     .padding()
             }else{
-                Button("Start Gyro", action: gyro.startGyros)
+                Button("Start Gyro", action: gyro.startGyro)
                     .padding()
             }
             Spacer()
@@ -41,9 +41,10 @@ struct ContentView: View {
             }
         }
     }
+    
     private func startBoth(){
-        ac.startAccelerometers()
-        gyro.startGyros()
+        ac.startAcc()
+        gyro.startGyro()
     }
     
     private func stopBoth(){
