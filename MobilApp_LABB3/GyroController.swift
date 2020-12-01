@@ -25,13 +25,13 @@ class GyroController:ObservableObject
         cPitch = 0.00
         cPitchOld = 0.00
         oldY = 0.00
-        ac.startAcc()
     }
     
     func startGyros() {
        if motion.isGyroAvailable {
           self.motion.gyroUpdateInterval = 1.0 / 60.0
           self.motion.startGyroUpdates()
+          ac.startAcc()
         isOn = true
           // Configure a timer to fetch the accelerometer data.
           self.timer = Timer(fire: Date(), interval: (1.0/60.0),
