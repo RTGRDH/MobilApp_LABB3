@@ -10,7 +10,7 @@ import CoreMotion
 public class AccController: ObservableObject
 {
     let motion = CMMotionManager()
-    var pitch:Double
+    @Published var pitch:Double
     private var timer = Timer()
     init()
     {
