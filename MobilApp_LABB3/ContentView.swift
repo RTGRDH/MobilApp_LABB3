@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var controller = Controller()
-    @State var ac = AccController()
+    @ObservedObject var ac = AccController()
     var body: some View {
         
         VStack(){

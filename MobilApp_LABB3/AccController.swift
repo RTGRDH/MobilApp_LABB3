@@ -7,7 +7,7 @@
 
 import Foundation
 import CoreMotion
-public class AccController
+public class AccController: ObservableObject
 {
     let motion = CMMotionManager()
     var pitch:Double
