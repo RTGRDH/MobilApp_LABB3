@@ -13,9 +13,11 @@ class GyroController:ObservableObject
     let motion = CMMotionManager()
     private var timer = Timer()
     @Published var isOn:Bool
+    @Published var value: Double
     init()
     {
         isOn = false
+        value = 0.00
     }
     
     func startGyros() {

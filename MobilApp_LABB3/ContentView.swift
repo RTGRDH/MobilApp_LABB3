@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var controller = Controller()
     @ObservedObject var ac = AccController()
+    @ObservedObject var gyro = GyroController()
     var body: some View {
         VStack(){
             HStack {
@@ -24,9 +25,13 @@ struct ContentView: View {
                 Button("Start Accelerometer", action: ac.startAccelerometers).padding()
             }
             HStack{
-                Text("Gyro: ")
+                Text("Gyro: \(Double(gyro.value))")
             }
-            Button("Start Gyro", action: ac.startAccelerometers)
+            if(gyro.isOn){
+                Button("Stop Gyro", action:gyro.stopGyros)
+            }else{
+                Button("Start Gyro", action: gyro.startGyros)
+            }
         }
     }
 }
