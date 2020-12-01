@@ -15,7 +15,8 @@ class GyroController:ObservableObject
     private var timer = Timer()
     @Published var isOn:Bool
     private var alpha:Double
-    private var cPitch:Double
+    @Published var cPitch:Double
+    private var oldY:Double
     private var cPitchOld:Double
     init()
     {
@@ -23,13 +24,15 @@ class GyroController:ObservableObject
         alpha = 0.1
         cPitch = 0.00
         cPitchOld = 0.00
+        oldY = 0.00
+        ac.startAccelerometers()
     }
     
     func startGyros() {
        if motion.isGyroAvailable {
           self.motion.gyroUpdateInterval = 1.0 / 60.0
           self.motion.startGyroUpdates()
-
+        isOn = true
           // Configure a timer to fetch the accelerometer data.
           self.timer = Timer(fire: Date(), interval: (1.0/60.0),
                  repeats: true, block: { (timer) in
@@ -40,7 +43,9 @@ class GyroController:ObservableObject
                 let z = data.rotationRate.z
 
                 // Use the gyroscope data in your app.
-                self.cPitch = self.alpha*(self.cPitchOld + (self.motion.gyroUpdateInterval * y)) + ((1-alpha)*ac.getaccPitch())
+                let fY = self.filterY(y: y, oldY: self.oldY)
+                self.oldY = fY
+                self.cPitch = self.alpha*(self.cPitchOld + (self.motion.gyroUpdateInterval * fY)) + ((1-self.alpha)*self.ac.getaccPitch())
                 self.cPitchOld = self.cPitch
              }
           })
@@ -54,6 +59,15 @@ class GyroController:ObservableObject
        if self.timer != nil {
           self.timer.invalidate()
           self.motion.stopGyroUpdates()
+        isOn = false
        }
+    }
+    private func filterY(y:Double, oldY:Double)->Double
+    {
+        return (1-self.alpha)*(oldY) + (self.alpha * y)
+    }
+    public func getCPitch()-> Double
+    {
+        return cPitch
     }
 }

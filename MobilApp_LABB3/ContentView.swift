@@ -14,25 +14,41 @@ struct ContentView: View {
     var body: some View {
         VStack(){
             HStack {
-                Text("Acc: \(Double(ac.roll))")
-                    .padding()
-                Text("Filter: \(Double(ac.filteredVal))")
+                Text("Acc: \(ac.accPitch, specifier: "%.2f°")")
                     .padding()
             }
             if(ac.isOn){
                 Button("Stop Accelerometer", action: ac.stopAccelerometerUpdates)
+                    .padding()
             }else{
                 Button("Start Accelerometer", action: ac.startAccelerometers).padding()
             }
             HStack{
-                Text("Gyro: \(Double(gyro.value))")
+                Text("Gyro: \(gyro.cPitch, specifier: "%.2f°")")
             }
             if(gyro.isOn){
                 Button("Stop Gyro", action:gyro.stopGyros)
+                    .padding()
             }else{
                 Button("Start Gyro", action: gyro.startGyros)
+                    .padding()
+            }
+            Spacer()
+            if(ac.isOn && gyro.isOn){
+                Button("Stop Both", action: stopBoth)
+            }else if(!ac.isOn && !gyro.isOn){
+                Button("Start Both", action: startBoth)
             }
         }
+    }
+    private func startBoth(){
+        ac.startAccelerometers()
+        gyro.startGyros()
+    }
+    
+    private func stopBoth(){
+        ac.stopAccelerometerUpdates()
+        gyro.stopGyros()
     }
 }
 

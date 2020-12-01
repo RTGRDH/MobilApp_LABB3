@@ -10,25 +10,21 @@ import CoreMotion
 public class AccController: ObservableObject
 {
     let motion = CMMotionManager()
-    @Published var roll:Double
     @Published var isOn: Bool
-    private var magnitude:Double //Known as F
-    private var gravity:Double //Known as g
     private var alpha:Double
-    @Published var filteredVal:Double
-    private var filteredValOld:Double
-    private var accPitch:Double
+    @Published var accPitch:Double
+    private var oldX:Double
+    private var oldY:Double
+    private var oldZ:Double
     private var timer = Timer()
     init()
     {
-        roll = 0.00
-        magnitude = 0.00
-        gravity = 1
         alpha = 0.01
-        filteredVal = 0.00
         isOn = false
-        filteredValOld = 0.00
         accPitch = 0.00
+        oldX = 0.00
+        oldY = 0.00
+        oldZ = 0.00
     }
     /*
      From Apple's developer site
@@ -50,23 +46,32 @@ public class AccController: ObservableObject
                 let z = data.acceleration.z
 
                 // Use the accelerometer data in your app.
-                self.roll = atan((y)/(sqrt(pow(x, 2)+pow(z, 2))))*(180/Double.pi) //Raw
                 //EWMA Filter
-                let xPow = pow(x, 2)
-                let yPow = pow(y, 2)
-                let zPow = pow(z, 2)
-                let root = sqrt(xPow + yPow + zPow)
-                //self.magnitude = sqrt(pow(x, 2)+pow(y, 2)+pow(z, 2))-self.gravity //Calc F
-                self.magnitude = root - gravity
-                filteredVal = (1-self.alpha)*(self.filteredValOld) + (self.alpha * self.magnitude)
-                self.filteredValOld = self.filteredVal
-                accPitch = atan(x/(sqrt(yPow+zPow)))*(180/Double.pi)
+                let fX = filterX(x: x, oldX: oldX)
+                let fY = filterY(y: y, oldY: oldY)
+                let fZ = filterZ(z: z, oldZ: oldZ)
+                oldX = fX
+                oldY = fY
+                oldZ = fZ
+                accPitch = atan(fX/(sqrt(pow(fY, 2)+pow(fZ, 2))))*(180/Double.pi)
              }
           })
 
           // Add the timer to the current run loop.
         RunLoop.current.add(self.timer, forMode: RunLoop.Mode.default)
        }
+    }
+    private func filterX(x:Double, oldX:Double) -> Double
+    {
+        return (1-self.alpha)*(oldX) + (self.alpha * x)
+    }
+    private func filterY(y:Double, oldY:Double) -> Double
+    {
+        return (1-self.alpha)*(oldY) + (self.alpha * y)
+    }
+    private func filterZ(z:Double, oldZ:Double)->Double
+    {
+        return (1-self.alpha)*(oldZ) + (self.alpha * z)
     }
     public func stopAccelerometerUpdates() -> Void
     {
@@ -78,8 +83,5 @@ public class AccController: ObservableObject
     public func getaccPitch() -> Double
     {
         return accPitch
-    }
-    public func getRoll() -> String{
-        return String(roll)
     }
 }
