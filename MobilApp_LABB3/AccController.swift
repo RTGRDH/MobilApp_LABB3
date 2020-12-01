@@ -17,7 +17,6 @@ public class AccController: ObservableObject
     {
         pitch = 0.00
         isOn = false
-        startAccelerometers()
     }
     /*
      From Apple's developer site
@@ -46,6 +45,13 @@ public class AccController: ObservableObject
           // Add the timer to the current run loop.
         RunLoop.current.add(self.timer, forMode: RunLoop.Mode.default)
        }
+    }
+    public func stopAccelerometerUpdates() -> Void
+    {
+        if self.motion.isAccelerometerActive{
+            self.motion.stopAccelerometerUpdates()
+        }
+        isOn = false
     }
     public func getPitch() -> String{
         return String(pitch)

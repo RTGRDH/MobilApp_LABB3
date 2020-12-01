@@ -16,7 +16,7 @@ struct ContentView: View {
             Text("\(Double(ac.pitch))")
                 .padding()
             if(ac.isOn){
-                Button("Stop", action: ac.startAccelerometers)
+                Button("Stop", action: ac.stopAccelerometerUpdates)
             }else{
             Button("Start", action: ac.startAccelerometers)
             }
