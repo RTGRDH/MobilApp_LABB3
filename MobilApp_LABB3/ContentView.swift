@@ -15,7 +15,11 @@ struct ContentView: View {
         VStack(){
             Text("\(Double(ac.pitch))")
                 .padding()
-            Button("Start", action: ac.startAccelerometers).padding()
+            if(ac.isOn){
+                Button("Stop", action: ac.startAccelerometers)
+            }else{
+            Button("Start", action: ac.startAccelerometers)
+            }
         }
     }
 }

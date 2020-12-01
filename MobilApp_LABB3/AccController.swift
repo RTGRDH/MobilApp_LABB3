@@ -11,10 +11,13 @@ public class AccController: ObservableObject
 {
     let motion = CMMotionManager()
     @Published var pitch:Double
+    @Published var isOn: Bool
     private var timer = Timer()
     init()
     {
         pitch = 0.00
+        isOn = false
+        startAccelerometers()
     }
     /*
      From Apple's developer site
@@ -25,7 +28,7 @@ public class AccController: ObservableObject
        if self.motion.isAccelerometerAvailable {
           self.motion.accelerometerUpdateInterval = 1.0 / 60.0  // 60 Hz
           self.motion.startAccelerometerUpdates()
-
+          isOn = true
           // Configure a timer to fetch the data.
           self.timer = Timer(fire: Date(), interval: (1.0/60.0),
                 repeats: true, block: { (timer) in
