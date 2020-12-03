@@ -3,7 +3,8 @@
 //  MobilApp_LABB3
 //
 //  Created by Ernst on 2020-11-30.
-//
+//From Apple's developer site
+//https://developer.apple.com/documentation/coremotion/getting_raw_accelerometer_events
 
 import Foundation
 import CoreMotion
@@ -27,10 +28,6 @@ public class AccController: ObservableObject
         oldY = 0.00
         oldZ = 0.00
     }
-    /*
-     From Apple's developer site
-     https://developer.apple.com/documentation/coremotion/getting_raw_accelerometer_events
-     */
     func startAccelerometers() {
        // Make sure the accelerometer hardware is available.
        if self.motion.isAccelerometerAvailable {

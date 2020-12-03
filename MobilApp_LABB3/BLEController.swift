@@ -3,7 +3,7 @@
 //  MobilApp_LABB3
 //
 //  Created by Ernst on 2020-12-01.
-//
+//Code from Jonas Willén movesenseOSX_Firmware2.0
 
 import Foundation
 import CoreBluetooth
@@ -22,9 +22,8 @@ struct Log: TextOutputStream {
     }
 }
 struct Peripheral: Identifiable {
-    let id: Int
+    let id: UUID
     let name: String
-    let rssi: Int
 }
 
 class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, ObservableObject {
@@ -81,9 +80,7 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         print("didDiscover, ", peripheral.name ?? "Unknown")
-        /*
-         Appends a list of peripherals into the struct
-         */
+        
         /*
         let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi: RSSI.intValue)
         devices.append(newDevice)*/
@@ -102,11 +99,14 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
             central.stopScan()
         }
         */
-        if let name = peripheral.name, name.contains("Movesense 203130000598"){ //175130000975
-            print("Found first Movesense")
+        if let name = peripheral.name, name.contains("Movesense"){
+            print("Found Movesense")
             print(peripheral.services?.first?.uuid)
             bluetoothDevices.append(peripheral)
-            let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi:1)
+            /*
+             Appends a list of peripherals into the struct to be displayed for user
+             */
+           let newDevice = Peripheral(id:UUID(), name: peripheral.name ?? "")
             devices.append(newDevice)
             NotificationCenter.default.post(name: Notification.Name(rawValue: myNotificationKey), object: nil)
             /*if peripheralBLE == nil{
@@ -127,12 +127,11 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
             }
             //central.stopScan()
         }
-        
+        /*
         if peripheralBLE != nil && peripheralBLE2 != nil{
             print("stopScan")
             central.stopScan()
-        }
- 
+        }*/
     }
     
     func disconnect(){
@@ -149,36 +148,26 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
                     peripheralBLE = peripheral
                     peripheralBLE.delegate = self
                     centralManager.connect(peripheralBLE)
+                    centralManager.stopScan()
                 }
             }
         }
     }
-    
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
             print("didConnect")
            peripheral.discoverServices([GATTService])
-            //peripheral.discoverServices(nil)
            central.scanForPeripherals(withServices: [GATTService], options: nil)
     }
-    
-  
     
    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         for service in peripheral.services!{
             print("Service Found")
-            print(peripheral.services?.first?.uuid)
-            /*if(service.uuid.isEqual(GATTService))
-            {
-                let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi:1)
-                devices.append(newDevice)
-            }*/
             peripheral.discoverCharacteristics([GATTData, GATTCommand], for: service)
         }
     }
     
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         print("didDiscoverCharacteristics")
-        print(service.characteristics!.first?.uuid)
         guard let characteristics = service.characteristics else { return }
 
       
@@ -352,6 +341,8 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     
     func start(){
         print("centralManager")
+        devices.removeAll()
+        print(devices.count)
         centralManager = CBCentralManager(delegate: self, queue: nil)
     }
     

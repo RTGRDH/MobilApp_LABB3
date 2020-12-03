@@ -3,7 +3,8 @@
 //  MobilApp_LABB3
 //
 //  Created by Ernst on 2020-12-01.
-//
+// From Apple's developer site
+// https://developer.apple.com/documentation/coremotion/getting_raw_gyroscope_events
 
 import Foundation
 import CoreMotion

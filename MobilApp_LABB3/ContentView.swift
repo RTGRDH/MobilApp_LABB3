@@ -12,21 +12,24 @@ struct ContentView: View {
     @ObservedObject var ac = AccController()
     @ObservedObject var gyro = GyroController()
     @ObservedObject var BLE = BLEConnection()
+    @State var isPresented = false
     var body: some View {
         VStack(){
-            HStack {
-                Text("Acc: \(ac.accPitch, specifier: "%.2f°")")
-                    .padding()
+            Button("BLE-devices"){
+                self.isPresented.toggle()
+            }.padding().sheet(isPresented: $isPresented){
+                DevicesView(BLE: self.BLE)
             }
+            Divider()
+            Text("Acc: \(ac.accPitch, specifier: "%.2f°")")
+                .padding()
             if(ac.isOn){
                 Button("Stop Accelerometer", action: ac.stopAccelerometerUpdates)
                     .padding()
             }else{
                 Button("Start Accelerometer", action: ac.startAcc).padding()
             }
-            HStack{
-                Text("Gyro: \(gyro.cPitch, specifier: "%.2f°")")
-            }
+            Text("Gyro: \(gyro.cPitch, specifier: "%.2f°")")
             if(gyro.isOn){
                 Button("Stop Gyro", action:gyro.stopGyros)
                     .padding()
@@ -34,25 +37,19 @@ struct ContentView: View {
                 Button("Start Gyro", action: gyro.startGyro)
                     .padding()
             }
-            Spacer()
             if(ac.isOn && gyro.isOn){
                 Button("Stop Both", action: stopBoth)
             }else if(!ac.isOn && !gyro.isOn){
                 Button("Start Both", action: startBoth)
             }
+            //Divider()
+            Button("Stop Movesense", action: BLE.disconnect).padding()
+            //Spacer()
+            Text("Movesense Acc: \(BLE.accPitch, specifier: "%.2f°")")
+                .padding()
+            Text("Movesense Gyro: \(BLE.cPitch, specifier: "%.2f°")")
             /*
             Button("Scan for BLE devices", action: BLE.start).padding()*/
-            //PresentationButton
-            Button("Scan for BLE devices", action: BLE.start).padding()
-            ScrollView{
-                ForEach(BLE.devices){
-                    device in
-                    Text("\(device.name)")
-                        .onTapGesture {
-                            BLE.connect(name: device.name)
-                        }
-                }
-            }
         }.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
             BLE.disconnect()
         }
