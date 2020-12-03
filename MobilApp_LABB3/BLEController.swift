@@ -105,14 +105,15 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
         if let name = peripheral.name, name.contains("Movesense 203130000598"){ //175130000975
             print("Found first Movesense")
             print(peripheral.services?.first?.uuid)
+            bluetoothDevices.append(peripheral)
             NotificationCenter.default.post(name: Notification.Name(rawValue: myNotificationKey), object: nil)
-            if peripheralBLE == nil{
+            /*if peripheralBLE == nil{
                 peripheralBLE = peripheral
                 peripheralBLE.delegate = self
                 centralManager.connect(peripheralBLE)
                 
             }
-            central.stopScan()
+            central.stopScan()*/
         }
         
         if let name = peripheral.name, name.contains("Movesense 175030001117"){ //175030001117
@@ -132,7 +133,17 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
  
     }
     
-    
+    func connect(name: String){
+        for peripheral in bluetoothDevices{
+            if peripheralBLE == nil{
+                if(peripheral.name == name){
+                    peripheralBLE = peripheral
+                    peripheralBLE.delegate = self
+                    centralManager.connect(peripheralBLE)
+                }
+            }
+        }
+    }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
             print("didConnect")

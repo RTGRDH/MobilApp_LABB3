@@ -54,6 +54,9 @@ struct ContentView: View {
                 ForEach(BLE.devices){
                     device in
                     Text("\(device.name)")
+                        .onTapGesture {
+                            BLE.connect(\(device.name))
+                        }
                 }
             }
         }
