@@ -42,6 +42,7 @@ struct ContentView: View {
             }
             /*
             Button("Scan for BLE devices", action: BLE.start).padding()*/
+            //PresentationButton
             Button("Scan for BLE devices", action: BLE.start).padding()
             ScrollView{
                 ForEach(BLE.devices){

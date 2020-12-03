@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A71E685D25793BE5007F14DF /* DevicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E685C25793BE5007F14DF /* DevicesView.swift */; };
 		A76786CC2575800C00A7E230 /* MobilApp_LABB3App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786CB2575800C00A7E230 /* MobilApp_LABB3App.swift */; };
 		A76786CE2575800C00A7E230 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786CD2575800C00A7E230 /* ContentView.swift */; };
 		A76786D02575801200A7E230 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A76786CF2575801200A7E230 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A71E685C25793BE5007F14DF /* DevicesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevicesView.swift; sourceTree = "<group>"; };
 		A76786C82575800C00A7E230 /* MobilApp_LABB3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobilApp_LABB3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A76786CB2575800C00A7E230 /* MobilApp_LABB3App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilApp_LABB3App.swift; sourceTree = "<group>"; };
 		A76786CD2575800C00A7E230 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				A76786CB2575800C00A7E230 /* MobilApp_LABB3App.swift */,
+				A71E685C25793BE5007F14DF /* DevicesView.swift */,
 				A76786CD2575800C00A7E230 /* ContentView.swift */,
 				A76786F92575807600A7E230 /* Controller.swift */,
 				A76786FE257581F100A7E230 /* AccController.swift */,
@@ -277,6 +280,7 @@
 				A76786CE2575800C00A7E230 /* ContentView.swift in Sources */,
 				A76786CC2575800C00A7E230 /* MobilApp_LABB3App.swift in Sources */,
 				A7B366322576DC6700A51B9E /* BLEController.swift in Sources */,
+				A71E685D25793BE5007F14DF /* DevicesView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
