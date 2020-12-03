@@ -11,7 +11,7 @@ struct ContentView: View {
     @State var controller = Controller()
     @ObservedObject var ac = AccController()
     @ObservedObject var gyro = GyroController()
-    @ObservedObject var BLE: BLEConnection
+    @ObservedObject var BLE = BLEConnection()
     var body: some View {
         VStack(){
             HStack {
@@ -53,6 +53,8 @@ struct ContentView: View {
                         }
                 }
             }
+        }.onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+            BLE.disconnect()
         }
     }
     /*
@@ -74,6 +76,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(BLE: BLEConnection())
+        ContentView()
     }
 }
