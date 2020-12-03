@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-
+import ExternalAccessory
 struct ContentView: View {
     @State var controller = Controller()
     @ObservedObject var ac = AccController()
     @ObservedObject var gyro = GyroController()
+    @ObservedObject var BLE = BLEConnection()
     var body: some View {
         VStack(){
             HStack {
@@ -39,9 +40,26 @@ struct ContentView: View {
             }else if(!ac.isOn && !gyro.isOn){
                 Button("Start Both", action: startBoth)
             }
+            
+            Button("Scan for BLE devices", action: BLE.start).padding()
+            VStack
+            {
+                ScrollView
+                {
+                    ForEach(BLE.devices)
+                    { device in
+                        Text("\(device.name)")
+                        Spacer()
+                    }
+                }
+            }
         }
     }
-    
+    /*
+    private func startScan(){
+        BLE.start
+    }
+    */
     private func startBoth(){
         ac.startAcc()
         gyro.startGyro()
@@ -51,6 +69,7 @@ struct ContentView: View {
         ac.stopAccelerometerUpdates()
         gyro.stopGyros()
     }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
