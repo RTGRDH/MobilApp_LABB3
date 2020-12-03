@@ -106,6 +106,8 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
             print("Found first Movesense")
             print(peripheral.services?.first?.uuid)
             bluetoothDevices.append(peripheral)
+            let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi:1)
+            devices.append(newDevice)
             NotificationCenter.default.post(name: Notification.Name(rawValue: myNotificationKey), object: nil)
             /*if peripheralBLE == nil{
                 peripheralBLE = peripheral
@@ -158,11 +160,11 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
         for service in peripheral.services!{
             print("Service Found")
             print(peripheral.services?.first?.uuid)
-            if(service.uuid.isEqual(GATTService))
+            /*if(service.uuid.isEqual(GATTService))
             {
                 let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi:1)
                 devices.append(newDevice)
-            }
+            }*/
             peripheral.discoverCharacteristics([GATTData, GATTCommand], for: service)
         }
     }
