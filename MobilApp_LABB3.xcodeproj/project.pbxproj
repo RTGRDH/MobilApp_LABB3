@@ -14,7 +14,6 @@
 		A76786D32575801200A7E230 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A76786D22575801200A7E230 /* Preview Assets.xcassets */; };
 		A76786DE2575801300A7E230 /* MobilApp_LABB3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786DD2575801300A7E230 /* MobilApp_LABB3Tests.swift */; };
 		A76786E92575801300A7E230 /* MobilApp_LABB3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786E82575801300A7E230 /* MobilApp_LABB3UITests.swift */; };
-		A76786FA2575807600A7E230 /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786F92575807600A7E230 /* Controller.swift */; };
 		A76786FF257581F100A7E230 /* AccController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A76786FE257581F100A7E230 /* AccController.swift */; };
 		A7B3661F2576A2E200A51B9E /* GyroController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B3661E2576A2E200A51B9E /* GyroController.swift */; };
 		A7B366322576DC6700A51B9E /* BLEController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B366312576DC6700A51B9E /* BLEController.swift */; };
@@ -51,7 +50,6 @@
 		A76786E42575801300A7E230 /* MobilApp_LABB3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobilApp_LABB3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A76786E82575801300A7E230 /* MobilApp_LABB3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilApp_LABB3UITests.swift; sourceTree = "<group>"; };
 		A76786EA2575801300A7E230 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A76786F92575807600A7E230 /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		A76786FE257581F100A7E230 /* AccController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccController.swift; sourceTree = "<group>"; };
 		A7B3661E2576A2E200A51B9E /* GyroController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GyroController.swift; sourceTree = "<group>"; };
 		A7B366312576DC6700A51B9E /* BLEController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEController.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				A76786CB2575800C00A7E230 /* MobilApp_LABB3App.swift */,
 				A71E685C25793BE5007F14DF /* DevicesView.swift */,
 				A76786CD2575800C00A7E230 /* ContentView.swift */,
-				A76786F92575807600A7E230 /* Controller.swift */,
 				A76786FE257581F100A7E230 /* AccController.swift */,
 				A7B3661E2576A2E200A51B9E /* GyroController.swift */,
 				A7B366312576DC6700A51B9E /* BLEController.swift */,
@@ -275,7 +272,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7B3661F2576A2E200A51B9E /* GyroController.swift in Sources */,
-				A76786FA2575807600A7E230 /* Controller.swift in Sources */,
 				A76786FF257581F100A7E230 /* AccController.swift in Sources */,
 				A76786CE2575800C00A7E230 /* ContentView.swift in Sources */,
 				A76786CC2575800C00A7E230 /* MobilApp_LABB3App.swift in Sources */,
