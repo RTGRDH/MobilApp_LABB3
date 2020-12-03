@@ -55,7 +55,7 @@ struct ContentView: View {
                     device in
                     Text("\(device.name)")
                         .onTapGesture {
-                            BLE.connect(device.name)
+                            BLE.connect(name: device.name)
                         }
                 }
             }
