@@ -58,7 +58,7 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     @Published var cPitch:Float
     private var oldYGyro:Float
     private var cPitchOld:Float
-    
+        
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
           case .unknown:
@@ -133,6 +133,11 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
             central.stopScan()
         }
  
+    }
+    
+    func disconnect(){
+        print("Disconnecting: ", peripheralBLE.name!)
+        centralManager.cancelPeripheralConnection(peripheralBLE)
     }
     
     func connect(name: String){
