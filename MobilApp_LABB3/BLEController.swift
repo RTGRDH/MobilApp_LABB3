@@ -136,8 +136,10 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     }
     
     func disconnect(){
-        print("Disconnecting: ", peripheralBLE.name!)
-        centralManager.cancelPeripheralConnection(peripheralBLE)
+        if(peripheralBLE != nil){
+            print("Disconnecting: ", peripheralBLE.name!)
+            centralManager.cancelPeripheralConnection(peripheralBLE)
+        }
     }
     
     func connect(name: String){
