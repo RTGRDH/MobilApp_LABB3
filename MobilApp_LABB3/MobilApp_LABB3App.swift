@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct MobilApp_LABB3App: App {
+    @ObservedObject private var BLE = BLEConnection()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(BLE: BLE).onDisappear(perform: {
+                BLE.disconnect()
+            })
         }
     }
 }
