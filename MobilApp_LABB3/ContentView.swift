@@ -14,6 +14,13 @@ struct ContentView: View {
     @ObservedObject var BLE = BLEConnection()
     var body: some View {
         VStack(){
+            NavigationView{
+                NavigationLink(
+                    destination: Text("Destination"),
+                    label: {
+                        /*@START_MENU_TOKEN@*/Text("Navigate")/*@END_MENU_TOKEN@*/
+                    })
+            }
             HStack {
                 Text("Acc: \(ac.accPitch, specifier: "%.2f°")")
                     .padding()
@@ -40,17 +47,13 @@ struct ContentView: View {
             }else if(!ac.isOn && !gyro.isOn){
                 Button("Start Both", action: startBoth)
             }
-            
+            /*
+            Button("Scan for BLE devices", action: BLE.start).padding()*/
             Button("Scan for BLE devices", action: BLE.start).padding()
-            VStack
-            {
-                ScrollView
-                {
-                    ForEach(BLE.devices)
-                    { device in
-                        Text("\(device.name)")
-                        Spacer()
-                    }
+            ScrollView{
+                ForEach(BLE.devices){
+                    device in
+                    Text("\(device.name)")
                 }
             }
         }

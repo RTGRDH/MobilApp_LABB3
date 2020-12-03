@@ -47,6 +47,18 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     let GATTCommand = CBUUID(string: "34800001-7185-4d5d-b431-630e7050e8f0")
     let GATTData = CBUUID(string: "34800002-7185-4d5d-b431-630e7050e8f0")
     
+    //Accelerometer vars
+    private var alpha:Float
+    @Published var accPitch:Float
+    private var oldX:Float
+    private var oldY:Float
+    private var oldZ:Float
+    
+    //Gyrometer vars
+    @Published var cPitch:Float
+    private var oldYGyro:Float
+    private var cPitchOld:Float
+    
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
           case .unknown:
@@ -72,8 +84,9 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
         /*
          Appends a list of peripherals into the struct
          */
+        /*
         let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi: RSSI.intValue)
-        devices.append(newDevice)
+        devices.append(newDevice)*/
         //print(devices)
         /*
         if (peripheral.identifier.uuidString == GATTService.uuidString)
@@ -91,6 +104,7 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
         */
         if let name = peripheral.name, name.contains("Movesense 203130000598"){ //175130000975
             print("Found first Movesense")
+            print(peripheral.services?.first?.uuid)
             NotificationCenter.default.post(name: Notification.Name(rawValue: myNotificationKey), object: nil)
             if peripheralBLE == nil{
                 peripheralBLE = peripheral
@@ -132,6 +146,12 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         for service in peripheral.services!{
             print("Service Found")
+            print(peripheral.services?.first?.uuid)
+            if(service.uuid.isEqual(GATTService))
+            {
+                let newDevice = Peripheral(id:devices.count, name: peripheral.name ?? "", rssi:1)
+                devices.append(newDevice)
+            }
             peripheral.discoverCharacteristics([GATTData, GATTCommand], for: service)
         }
     }
@@ -206,7 +226,7 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
                     }
                     
                    
-                    print(byteArray)
+                    //print(byteArray.count)
                     
                     
                     let response = byteArray[0];
@@ -218,18 +238,35 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
                         var time : UInt32 = 0
                         let data = NSData(bytes: array, length: 4)
                         data.getBytes(&time, length: 4)
-                        print(time)
+                        //print(time)
                         
-                        
+                        //Accelerometer
                         let Xacc = bytesToFloat(bytes: [byteArray[9], byteArray[8], byteArray[7], byteArray[6]])
                         let Yacc = bytesToFloat(bytes: [byteArray[13], byteArray[12], byteArray[11], byteArray[10]])
                         let Zacc = bytesToFloat(bytes: [byteArray[17], byteArray[16], byteArray[15], byteArray[14]])
-                    
-                        print("X:\(Xacc) Y:\(Yacc)  Z:\(Zacc)")
                         
+                        //Filtered vals for acc using EWMA
+                       let fX = filterX(Xacc: Xacc, oldX: oldX)
+                        let fY = filterY(Yacc: Yacc, oldY: oldY)
+                        let fZ = filterZ(Zacc: Zacc, oldZ: oldZ)
+                        oldX = fX
+                        oldY = fY
+                        oldZ = fZ
+                        accPitch = atan(fX/(sqrt(pow(fY, 2)+pow(fZ, 2))))*(180/Float.pi)
+                        //print("Accelerometer: " + "X:\(Xacc) Y:\(Yacc)  Z:\(Zacc)")
+                        print(accPitch)
+                        //Gyrometer
+                        let Xgyro = bytesToFloat(bytes: [byteArray[21], byteArray[20], byteArray[19], byteArray[18]])
+                        let Ygyro = bytesToFloat(bytes: [byteArray[25], byteArray[24], byteArray[23], byteArray[22]])
+                        let Zgyro = bytesToFloat(bytes: [byteArray[29], byteArray[28], byteArray[27], byteArray[26]])
+                        let magnitude = bytesToFloat(bytes: [byteArray[30]])
                         
-                        
-                        
+                        //Filtered vals for gyro using EWMA
+                        let fYGyro = filterYGyro(yGyro: Ygyro, oldYGyro: oldYGyro)
+                        oldYGyro = fYGyro
+                        cPitch = alpha*(cPitchOld + ((1/52) * fYGyro)) + ((1-alpha)*accPitch)
+                        cPitchOld = cPitch
+                        //print(cPitch)
                 }
                    
                     
@@ -244,6 +281,22 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
               }
     }
     
+    private func filterX(Xacc:Float, oldX:Float) -> Float
+    {
+        return (1-self.alpha)*(oldX) + (self.alpha * Xacc)
+    }
+    private func filterY(Yacc:Float, oldY:Float) -> Float
+    {
+        return (1-self.alpha)*(oldY) + (self.alpha * Yacc)
+    }
+    private func filterZ(Zacc:Float, oldZ:Float)->Float
+    {
+        return (1-self.alpha)*(oldZ) + (self.alpha * Zacc)
+    }
+    private func filterYGyro(yGyro:Float, oldYGyro:Float)->Float
+    {
+        return (1-self.alpha)*(oldYGyro) + (self.alpha * yGyro)
+    }
     
     func bytesToFloat(bytes b: [UInt8]) -> Float {
         let bigEndianValue = b.withUnsafeBufferPointer {
@@ -260,6 +313,15 @@ class BLEConnection: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate, O
     
     
     override init() {
+        alpha = 0.01
+        accPitch = 0.00
+        oldX = 0.00
+        oldY = 0.00
+        oldZ = 0.00
+        cPitch = 0.00
+        oldYGyro = 0.00
+        cPitchOld = 0.00
+        
         super.init()
         OldGyroOne = 0.0;
         OldGyroTwo = 0.0;

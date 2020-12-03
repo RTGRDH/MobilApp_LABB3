@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct DevicesView: View {
+    @ObservedObject var BLE = BLEConnection()
     var body: some View {
-        Text("Hello")
+        Button("Scan for BLE devices", action: BLE.start).padding()
+        ScrollView{
+            ForEach(BLE.devices){
+                device in
+                Text("\(device.name)")
+            }
+        }
     }
 }
 
