@@ -8,7 +8,6 @@
 import SwiftUI
 import ExternalAccessory
 struct ContentView: View {
-    @State var controller = Controller()
     @ObservedObject var ac = AccController()
     @ObservedObject var gyro = GyroController()
     @ObservedObject var BLE = BLEConnection()
